@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="DramaBox logo">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff008c"/>
+      <stop offset="100%" stop-color="#ff8f1f"/>
+    </linearGradient>
+    <linearGradient id="inner" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffdbe9"/>
+      <stop offset="100%" stop-color="#fff4f8"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <rect x="75" y="75" width="362" height="362" rx="95" fill="#fff6f9"/>
+  <path d="M172 165c22-34 64-58 108-58 73 0 133 59 133 133s-60 133-133 133c-44 0-86-24-108-58l56-26c13 19 31 30 52 30 43 0 79-35 79-79s-36-79-79-79c-21 0-39 11-52 30z" fill="url(#inner)"/>
+  <path d="M228 190l104 50c14 7 14 26 0 33l-104 50c-13 7-28-3-28-17V207c0-14 15-24 28-17z" fill="#ff006f"/>
+</svg>
