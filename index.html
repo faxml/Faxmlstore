@@ -2886,10 +2886,7 @@
       border-color: #ff6b6b !important;
       box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.20) !important;
     }
-    #resetFormBtn:hover {
-      color: #ff6b6b !important;
-      background: rgba(255, 107, 107, 0.08) !important;
-    }
+
   </style>
 </head>
 
@@ -3388,10 +3385,7 @@
     <div class="modal glass" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="modal-header">
         <h3 id="modalTitle">Format Pembelian App Premium</h3>
-        <div style="display:flex;align-items:center;gap:6px;">
-          <button id="resetFormBtn" type="button" style="background:transparent;border:none;color:rgba(255,255,255,.5);font-size:11px;cursor:pointer;font-weight:800;padding:6px 10px;border-radius:8px;transition:color 0.15s,background 0.15s;">Hapus Riwayat</button>
-          <button id="closeModal" class="modal-close" type="button" aria-label="Tutup">✕</button>
-        </div>
+        <button id="closeModal" class="modal-close" type="button" aria-label="Tutup">✕</button>
       </div>
 
       <form id="buyForm" class="modal-body">
@@ -3415,7 +3409,15 @@
           <div id="block_netflix" style="display:none; grid-column:1/-1">
             <div class="form-grid">
               <div class="field">
-                <label>merk hp <span class="req">*</span></label>
+                <label>no. hp <span class="req">*</span></label>
+                <input id="n_nohp" type="tel" placeholder="Contoh: 081234567890">
+              </div>
+              <div class="field">
+                <label>email <span class="req">*</span></label>
+                <input id="n_email" type="email" placeholder="Contoh: email@gmail.com">
+              </div>
+              <div class="field">
+                <label>merk device <span class="req">*</span></label>
                 <input id="n_merk" type="text" placeholder="Contoh: Samsung A54 / iPhone 13">
               </div>
               <div class="field">
@@ -3423,13 +3425,13 @@
                 <input id="n_lokasi" type="text" placeholder="Contoh: Kab/provinsi">
               </div>
               <div class="field" style="grid-column:1/-1">
-                <label>1u/2u/semipriv/priv <span class="req">*</span></label>
+                <label>1u/2u/semiprivat <span class="req">*</span></label>
                 <select id="n_tipe">
                   <option value="">Pilih...</option>
                   <option value="1u">1u</option>
                   <option value="2u">2u</option>
-                  <option value="semipriv">semipriv</option>
-                  <option value="priv">priv</option>
+                  <option value="semiprivat">semiprivat</option>
+                  <option value="private">private</option>
                 </select>
               </div>
             </div>
@@ -3680,11 +3682,7 @@
       </div>
 
       <div class="modal-body">
-        <div id="paidNotif" style="display:none;margin-bottom:12px;padding:10px 12px;border-radius:12px;
-          background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.35);
-          color:rgba(255,255,255,.92);font-weight:900;font-size:13px;">
-          Pembayaran Berhasil (Klik <b>Lanjut WhatsApp</b>)
-        </div>
+        <div id="paidNotif" style="display:none;"></div>
 
         <div style="display:flex;flex-direction:column;gap:12px;">
           <!-- Order Summary Card -->
@@ -3923,6 +3921,61 @@
             <small style="display:block;margin-top:8px;color:rgba(255,255,255,.70);font-weight:800;line-height:1.5;">
               Pilih <b>Sudah</b> setelah melakukan pembayaran, lalu klik <b>Kirim</b>.
             </small>
+          </div>
+
+          <!-- Bukti Transfer Upload -->
+          <div id="buktitfWrap" style="display:none;">
+            <label style="font-weight:900;font-size:13px;color:rgba(255,255,255,.85);display:block;margin-bottom:8px;">
+              📎 Upload Bukti Transfer <span style="color:rgba(255,255,255,.45);font-weight:700;">(opsional)</span>
+            </label>
+
+            <!-- Drop zone -->
+            <label for="buktitfInput" id="buktitfDropzone" style="
+              display:flex;flex-direction:column;align-items:center;justify-content:center;
+              gap:8px;padding:20px 16px;
+              border:2px dashed rgba(117,83,255,.4);
+              border-radius:16px;
+              background:rgba(117,83,255,.06);
+              cursor:pointer;
+              transition:border-color .2s,background .2s;
+              text-align:center;
+            "
+              onmouseover="this.style.borderColor='rgba(117,83,255,.7)';this.style.background='rgba(117,83,255,.12)'"
+              onmouseout="this.style.borderColor='rgba(117,83,255,.4)';this.style.background='rgba(117,83,255,.06)'"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="rgba(117,83,255,.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px;">
+                <rect x="3" y="3" width="18" height="18" rx="3"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+              <span style="font-size:13px;font-weight:900;color:rgba(255,255,255,.75);">
+                Klik untuk pilih foto bukti TF
+              </span>
+              <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,.4);">
+                JPG, PNG, WebP — maks 10 MB
+              </span>
+            </label>
+            <input type="file" id="buktitfInput" accept="image/*" capture="environment" style="display:none;">
+
+            <!-- Preview -->
+            <div id="buktitfPreview" style="display:none;margin-top:10px;position:relative;">
+              <img id="buktitfImg" style="
+                width:100%;max-height:180px;object-fit:cover;
+                border-radius:12px;
+                border:1px solid rgba(117,83,255,.35);
+                box-shadow:0 8px 24px rgba(0,0,0,.3);
+                display:block;
+              " alt="Preview bukti transfer">
+              <button type="button" id="buktitfRemove" style="
+                position:absolute;top:8px;right:8px;
+                width:28px;height:28px;
+                border-radius:50%;border:none;
+                background:rgba(239,68,68,.85);
+                color:#fff;font-size:14px;font-weight:900;
+                cursor:pointer;display:flex;align-items:center;justify-content:center;
+                box-shadow:0 4px 12px rgba(0,0,0,.3);
+              ">✕</button>
+            </div>
           </div>
 
         </div>
@@ -4861,7 +4914,67 @@
       switchPayMethod(btn.dataset.method);
     }, { passive: true });
 
+    /* ---- iPhone "Tri-nada" (Tri-tone) Accurate Recreation ---- */
+    function playIphoneTritone() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+
+        // Master bus — soft volume
+        const master = ctx.createGain();
+        master.gain.setValueAtTime(0.28, ctx.currentTime);
+        master.connect(ctx.destination);
+
+        // Tri-nada iPhone asli: C6 → E6 → G6 (chord C mayor naik)
+        // Spacing ~140ms, setiap nada ~180ms, seperti original
+        const notes = [
+          { freq: 1046.50, t: 0.00 },   // C6
+          { freq: 1318.51, t: 0.14 },   // E6
+          { freq: 1567.98, t: 0.28 },   // G6
+        ];
+
+        notes.forEach(({ freq, t }) => {
+          const now = ctx.currentTime + t;
+
+          // === Nada utama (sine) ===
+          const osc1 = ctx.createOscillator();
+          const env1 = ctx.createGain();
+          osc1.type = "sine";
+          osc1.frequency.setValueAtTime(freq, now);
+          // Attack sangat cepat (12ms), decay lembut seperti xylophone
+          env1.gain.setValueAtTime(0, now);
+          env1.gain.linearRampToValueAtTime(1.0, now + 0.012);
+          env1.gain.exponentialRampToValueAtTime(0.0001, now + 0.20);
+          osc1.connect(env1);
+          env1.connect(master);
+          osc1.start(now);
+          osc1.stop(now + 0.22);
+
+          // === Harmonik ke-2 (freq × 2, volume kecil) → warna bell/xylophone ===
+          const osc2 = ctx.createOscillator();
+          const env2 = ctx.createGain();
+          osc2.type = "sine";
+          osc2.frequency.setValueAtTime(freq * 2, now);
+          env2.gain.setValueAtTime(0, now);
+          env2.gain.linearRampToValueAtTime(0.18, now + 0.010);
+          env2.gain.exponentialRampToValueAtTime(0.0001, now + 0.10);
+          osc2.connect(env2);
+          env2.connect(master);
+          osc2.start(now);
+          osc2.stop(now + 0.12);
+        });
+      } catch (err) {
+        console.warn("Web Audio API error:", err);
+      }
+    }
+
+    // Alias untuk kedua event (checkout & konfirmasi)
+    function playSuccessSound()  { playIphoneTritone(); }
+    function playConfirmSound()  { playIphoneTritone(); }
+
     function openPayModal() {
+      playSuccessSound();
       if (payAmount) payAmount.textContent = formatRupiah(selectedOrder.price);
       if (payProduct) payProduct.textContent = selectedOrder.product || "-";
       if (qrisImg) qrisImg.src = QRIS_IMAGE_URL;
@@ -4908,9 +5021,47 @@
         sendPaid.textContent = "Kirim";
         sendPaid.disabled = true;
       }
+      // Tampilkan / sembunyikan upload bukti TF
+      const buktitfWrap = qs("#buktitfWrap");
+      if (buktitfWrap) buktitfWrap.style.display = isPaid ? "block" : "none";
     }
     paidYes?.addEventListener("change", syncSendPaidState, { passive: true });
     paidNo?.addEventListener("change", syncSendPaidState, { passive: true });
+
+    /* ---- Bukti TF: preview & remove ---- */
+    (() => {
+      const input   = qs("#buktitfInput");
+      const preview = qs("#buktitfPreview");
+      const previewImg = qs("#buktitfImg");
+      const removeBtn  = qs("#buktitfRemove");
+      if (!input || !preview || !previewImg) return;
+
+      function clearBukti() {
+        input.value = "";
+        preview.style.display = "none";
+        previewImg.src = "";
+      }
+
+      input.addEventListener("change", () => {
+        const file = input.files?.[0];
+        if (!file) return clearBukti();
+        if (file.size > 10 * 1024 * 1024) {
+          showToast("Ukuran file maks 10 MB!", "error");
+          return clearBukti();
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          previewImg.src = e.target.result;
+          preview.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      }, { passive: true });
+
+      removeBtn?.addEventListener("click", clearBukti, { passive: true });
+
+      // Reset saat modal tutup
+      window.__resetBuktiTF = clearBukti;
+    })();
 
     backToForm?.addEventListener("click", () => {
       closePayModal();
@@ -4945,26 +5096,53 @@ Apakah stok ready?`;
       if (!isPaid) return;
 
       if (!waReadyToOpen) {
-        if (paidNotif) paidNotif.style.display = "block";
-        const body = payModal?.querySelector(".modal-body");
-        if (body) body.scrollTo({ top: 0, behavior: prefersReduce ? "auto" : "smooth" });
-        waReadyToOpen = true;
-        sendPaid.textContent = "Lanjut WhatsApp";
-        sendPaid.disabled = false;
-        return;
-      }
-
-      const pm = PAY_METHODS[selectedPayMethod] || PAY_METHODS.qris;
-      const finalMsg =
-        `${waFinalMessage}
+        playConfirmSound();
+        const pm = PAY_METHODS[selectedPayMethod] || PAY_METHODS.qris;
+        const finalMsg =
+          `${waFinalMessage}
 
 Konfirmasi pembayaran: SUDAH BAYAR
 Via: ${pm.label}
 Status: Menunggu admin proses.`.trim();
 
-      window.open(waLink(finalMsg), "_blank", "noopener,noreferrer");
-      closePayModal();
-      closeBuyModal();
+        const buktitfInput = qs("#buktitfInput");
+        const buktitfFile = buktitfInput?.files?.[0] || null;
+
+        if (typeof window.showSuccessPopup === "function") {
+          window.showSuccessPopup(async () => {
+            // ===== MOBILE: Web Share API (foto + teks sekaligus) =====
+            if (buktitfFile && navigator.canShare && navigator.canShare({ files: [buktitfFile] })) {
+              try {
+                await navigator.share({ files: [buktitfFile], text: finalMsg, title: "Bukti Transfer" });
+                closePayModal(); closeBuyModal(); return;
+              } catch (err) {
+                if (err.name !== "AbortError") {
+                  window.open(waLink(finalMsg), "_blank", "noopener,noreferrer");
+                }
+                closePayModal(); closeBuyModal(); return;
+              }
+            }
+
+            // ===== DESKTOP: Buka WA + copy foto ke clipboard =====
+            window.open(waLink(finalMsg), "_blank", "noopener,noreferrer");
+
+            if (buktitfFile) {
+              try {
+                // Coba copy image ke clipboard agar bisa langsung Ctrl+V di WhatsApp Web
+                const clipItem = new ClipboardItem({ [buktitfFile.type]: buktitfFile });
+                await navigator.clipboard.write([clipItem]);
+                showToast("✅ WhatsApp terbuka & foto sudah dikopi! Tekan Ctrl+V di WhatsApp untuk kirim bukti TF.", "success");
+              } catch (e) {
+                showToast("WhatsApp terbuka! Attach foto bukti TF secara manual di WhatsApp 📎", "info");
+              }
+            }
+
+            closePayModal(); closeBuyModal();
+          }, buktitfFile);
+        }
+        waReadyToOpen = true;
+        return;
+      }
     }, { passive: true });
 
     /* ========= Loading helpers ========= */
@@ -4994,7 +5172,6 @@ Status: Menunggu admin proses.`.trim();
     /* ========= BUY submit ========= */
     buyForm?.addEventListener("submit", (e) => {
       e.preventDefault();
-      saveFormData();
       setSendBtnLoading(true);
 
       const type = selectedOrder.type || "sharing";
@@ -5015,23 +5192,24 @@ Nominal: *${hargaTxt}*`;
       let msg = "";
 
       if (type === "netflix") {
+        const nohp = requireVal(qs("#n_nohp")?.value);
+        const email = requireVal(qs("#n_email")?.value);
         const merk = requireVal(qs("#n_merk")?.value);
         const lokasi = requireVal(qs("#n_lokasi")?.value);
         const tipe = requireVal(qs("#n_tipe")?.value);
-        if (!merk || !lokasi || !tipe) {
+        if (!nohp || !email || !merk || !lokasi || !tipe) {
           setSendBtnLoading(false);
           return alert("Harap isi semua field wajib (*)");
         }
         msg =
-          `*Format Netflix*
-
-*🐣* produk : ${selectedOrder.product}
-*🐣* tgl order : ${tgl}
-*🐣* durasi : ${durasi}
-*🐣* harga : ${hargaTxt}
-*🐣* merk hp : ${merk}
-*🐣* lokasi : ${lokasi}
-*🐣* 1u/2u/semipriv/priv : ${tipe}
+          `𝗙𝗼𝗿𝗺𝗮𝘁 𝗡𝗲𝘁𝗳𝗹𝗶𝘅
+𝗍𝖺𝗇𝗀𝗀𝖺𝗅 𝗈𝗋𝖽𝖾𝗋 : ${tgl}
+𝗇𝗈. 𝗁𝗉 : ${nohp}
+𝖾𝗆𝖺𝗂𝗅 : ${email}
+1u/2u/semiprivat : ${tipe}
+durasi : ${durasi}
+merk device : ${merk}
+lokasi : ${lokasi}
 
 ${basePayNote}`;
       } else if (type === "youtube") {
@@ -5435,56 +5613,192 @@ ${basePayNote}`;
       }, { passive: true });
     })();
 
-    /* ========= Auto Save Form Logic ========= */
-    const AUTO_SAVE_KEYS = [
-      'n_merk', 'n_lokasi', 'n_tipe',
-      's_device', 's_lokasi', 's_ket',
-      'p_ket', 'y_plan', 'y_email', 'y_pass',
-      'c_email', 'c_design', 'sp_plan', 'sp_email', 'sp_pass',
-      'a_pass', 'a_note', 'g_tipe', 'g_email', 'g_pass', 'g_ket',
-      'w_email', 'w_pass', 'w_ket'
-    ];
 
-    function saveFormData() {
-      AUTO_SAVE_KEYS.forEach(id => {
-        const el = qs(`#${id}`);
-        if (el && el.value) {
-          localStorage.setItem(`saved_${id}`, el.value);
-        }
-      });
-    }
-
-    function loadFormData() {
-      AUTO_SAVE_KEYS.forEach(id => {
-        const el = qs(`#${id}`);
-        const savedVal = localStorage.getItem(`saved_${id}`);
-        if (el && savedVal) {
-          el.value = savedVal;
-        }
-      });
-    }
-
-    // Reset Form Listener
-    qs("#resetFormBtn")?.addEventListener("click", async () => {
-      const ok = await showConfirm("Hapus semua riwayat pengisian form?");
-      if (ok) {
-        buyForm?.reset();
-        AUTO_SAVE_KEYS.forEach(id => {
-          localStorage.removeItem(`saved_${id}`);
-        });
-        showToast("Riwayat pengisian berhasil dihapus!", "success");
-      }
-    });
 
     /* ========= Init ========= */
     // Render langsung tanpa menunggu DOMContentLoaded agar browser curi start download gambar
     renderProducts(products);
     applySearch("");
-
-    document.addEventListener("DOMContentLoaded", () => {
-      loadFormData();
-    }, { passive: true });
   </script>
+
+  <!-- ===== SUCCESS POPUP ===== -->
+  <div id="successPopupOverlay" aria-hidden="true" style="
+    position:fixed;inset:0;z-index:20000;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(0,0,0,0.65);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    opacity:0;visibility:hidden;
+    transition:opacity .35s ease,visibility .35s ease;
+    padding:24px;
+  ">
+    <div id="successPopupCard" style="
+      background:linear-gradient(145deg,rgba(15,20,40,.98),rgba(10,14,30,.98));
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:28px;
+      padding:40px 36px 36px;
+      max-width:400px;width:100%;
+      text-align:center;
+      box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 1px rgba(117,83,255,.18),inset 0 1px 0 rgba(255,255,255,.08);
+      transform:scale(.88) translateY(24px);
+      transition:transform .4s cubic-bezier(.16,1,.3,1);
+      position:relative;overflow:hidden;
+    ">
+      <!-- glow accent -->
+      <div style="position:absolute;top:-60px;left:50%;transform:translateX(-50%);
+        width:240px;height:140px;
+        background:radial-gradient(ellipse,rgba(34,197,94,.28) 0%,transparent 70%);
+        pointer-events:none;"></div>
+
+      <!-- Icon checkmark -->
+      <div style="
+        width:72px;height:72px;border-radius:50%;
+        background:linear-gradient(135deg,rgba(34,197,94,.22),rgba(16,185,129,.14));
+        border:2px solid rgba(34,197,94,.45);
+        box-shadow:0 0 40px rgba(34,197,94,.25);
+        display:flex;align-items:center;justify-content:center;
+        margin:0 auto 22px;
+      ">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round"
+          style="width:34px;height:34px;">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+
+      <div style="font-size:22px;font-weight:900;letter-spacing:-.4px;color:#fff;margin-bottom:10px;">
+        Pembayaran Dikonfirmasi
+      </div>
+      <div id="spopSubtext" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.65);line-height:1.6;margin-bottom:16px;">
+        Terima kasih! Klik tombol di bawah untuk<br>mengirim konfirmasi ke admin via WhatsApp.
+      </div>
+
+      <!-- Preview bukti TF di dalam popup -->
+      <div id="spopBuktiWrap" style="display:none;margin-bottom:16px;">
+        <img id="spopBuktiImg" style="
+          width:100%;max-height:140px;object-fit:cover;
+          border-radius:14px;
+          border:1px solid rgba(34,197,94,.35);
+          box-shadow:0 6px 20px rgba(0,0,0,.35);
+          display:block;
+        " alt="Bukti Transfer">
+        <div id="spopPasteHint" style="
+          display:none;
+          margin-top:10px;padding:10px 14px;
+          border-radius:12px;
+          background:rgba(34,197,94,.12);
+          border:1px solid rgba(34,197,94,.3);
+          font-size:12px;font-weight:800;
+          color:rgba(255,255,255,.85);
+          line-height:1.5;
+          text-align:left;
+        ">
+          📋 <b>Foto sudah dikopi ke clipboard!</b><br>
+          Setelah WhatsApp terbuka, tekan <b>Ctrl+V</b> (PC) atau tahan lama di kotak pesan (HP) untuk paste bukti TF.
+        </div>
+      </div>
+
+      <button id="successPopupWaBtn" style="
+        width:100%;padding:14px 20px;
+        border-radius:999px;border:none;
+        background:linear-gradient(135deg,#22c55e,#16a34a);
+        box-shadow:0 10px 32px rgba(34,197,94,.35);
+        color:#fff;font-weight:900;font-size:15px;
+        cursor:pointer;display:flex;align-items:center;
+        justify-content:center;gap:10px;
+        transition:transform .18s ease,box-shadow .18s ease;
+      "
+        onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 14px 40px rgba(34,197,94,.45)'"
+        onmouseout="this.style.transform='';this.style.boxShadow='0 10px 32px rgba(34,197,94,.35)'"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        Lanjut WhatsApp
+      </button>
+
+      <button id="successPopupCloseBtn" style="
+        margin-top:12px;width:100%;padding:11px 20px;
+        border-radius:999px;
+        border:1px solid rgba(255,255,255,.14);
+        background:rgba(255,255,255,.05);
+        color:rgba(255,255,255,.65);font-weight:900;font-size:14px;
+        cursor:pointer;
+        transition:background .18s ease;
+      "
+        onmouseover="this.style.background='rgba(255,255,255,.1)'"
+        onmouseout="this.style.background='rgba(255,255,255,.05)'"
+      >Tutup</button>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const overlay  = document.getElementById('successPopupOverlay');
+      const card     = document.getElementById('successPopupCard');
+      const waBtn    = document.getElementById('successPopupWaBtn');
+      const closeBtn = document.getElementById('successPopupCloseBtn');
+      const buktiWrap = document.getElementById('spopBuktiWrap');
+      const buktiImg  = document.getElementById('spopBuktiImg');
+      const pasteHint = document.getElementById('spopPasteHint');
+      if (!overlay) return;
+
+      // showSuccessPopup(onWaClick, fileObj)
+      window.showSuccessPopup = function(onWaClick, fileObj) {
+        // Tampilkan preview foto jika ada
+        if (fileObj && buktiWrap && buktiImg) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            buktiImg.src = e.target.result;
+            buktiWrap.style.display = 'block';
+          };
+          reader.readAsDataURL(fileObj);
+        } else if (buktiWrap) {
+          buktiWrap.style.display = 'none';
+        }
+        if (pasteHint) pasteHint.style.display = 'none';
+
+        overlay.style.opacity = '1';
+        overlay.style.visibility = 'visible';
+        overlay.setAttribute('aria-hidden', 'false');
+        card.style.transform = 'scale(1) translateY(0)';
+
+        waBtn.onclick = async function() {
+          // Jika ada file & bisa copy ke clipboard → tampilkan hint sebelum tutup
+          if (fileObj && navigator.clipboard && window.ClipboardItem) {
+            try {
+              const ci = new ClipboardItem({ [fileObj.type]: fileObj });
+              await navigator.clipboard.write([ci]);
+              if (pasteHint) pasteHint.style.display = 'block';
+              // Tunggu sebentar supaya user bisa baca, lalu jalankan callback
+              setTimeout(() => {
+                hideSuccessPopup();
+                if (typeof onWaClick === 'function') onWaClick();
+              }, 1200);
+              return;
+            } catch (e) { /* fallthrough */ }
+          }
+          hideSuccessPopup();
+          if (typeof onWaClick === 'function') onWaClick();
+        };
+      };
+
+      function hideSuccessPopup() {
+        overlay.style.opacity = '0';
+        overlay.style.visibility = 'hidden';
+        overlay.setAttribute('aria-hidden', 'true');
+        card.style.transform = 'scale(.88) translateY(24px)';
+        if (buktiImg) buktiImg.src = '';
+        if (buktiWrap) buktiWrap.style.display = 'none';
+        if (pasteHint) pasteHint.style.display = 'none';
+      }
+
+      closeBtn.addEventListener('click', hideSuccessPopup);
+      overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) hideSuccessPopup();
+      });
+    })();
+  </script>
+
 </body>
 
 </html>
